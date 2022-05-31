@@ -1,0 +1,191 @@
+CREATE TABLE [Books] (
+	Id int NOT NULL,
+	Name nvarchar(40) NOT NULL,
+	Price decimal(5,2) NOT NULL,
+	Description nvarchar(300) NOT NULL,
+	PageCount int NOT NULL,
+	Language nvarchar(40) NOT NULL,
+	Binding nvarchar(30) NOT NULL,
+	İnformation_İd int NOT NULL,
+	Publish_İd int NOT NULL,
+	Author_İd int NOT NULL,
+  CONSTRAINT [PK_BOOKS] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [Authors] (
+	Id int NOT NULL,
+	Name nvarchar(35) NOT NULL,
+	Surname nvarchar(35) NOT NULL,
+  CONSTRAINT [PK_AUTHORS] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [PublishHouse] (
+	Id int NOT NULL,
+	Name nvarchar(40) NOT NULL,
+  CONSTRAINT [PK_PUBLISHHOUSE] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [Genres] (
+	Id int NOT NULL,
+	Name nvarchar(35) NOT NULL,
+  CONSTRAINT [PK_GENRES] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [SocialMedias] (
+	Id int NOT NULL,
+	Name nvarchar(30) NOT NULL,
+	URL nvarchar(100) NOT NULL,
+	Icon nvarchar(100) NOT NULL,
+	Setting_İd int NOT NULL,
+  CONSTRAINT [PK_SOCIALMEDIAS] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [BooksCategory] (
+	Id int NOT NULL,
+	Genre_İd int NOT NULL,
+	Book_İd int NOT NULL,
+  CONSTRAINT [PK_BOOKSCATEGORY] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [User] (
+	Id int NOT NULL,
+	Name nvarchar(35) NOT NULL,
+	Surname nvarchar(35) NOT NULL,
+	Image nvarchar(100) NOT NULL,
+  CONSTRAINT [PK_USER] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [Comments] (
+	Id int NOT NULL,
+	Message nvarchar(200) NOT NULL,
+	Date date NOT NULL,
+	User_Id int NOT NULL,
+	Books_Id int NOT NULL,
+  CONSTRAINT [PK_COMMENTS] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [Information] (
+	Id int NOT NULL,
+	Delivery nvarchar(30) NOT NULL,
+	PaymentMethod nvarchar(40) NOT NULL,
+  CONSTRAINT [PK_INFORMATION] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [Discount] (
+	Id int NOT NULL,
+	OldPrice int NOT NULL,
+	DiscountPercent decimal NOT NULL,
+	NewPrice decimal(5,2) NOT NULL,
+	Book_İd int NOT NULL,
+  CONSTRAINT [PK_DISCOUNT] PRIMARY KEY CLUSTERED
+  (
+  [Id] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+CREATE TABLE [Settings] (
+	İd int NOT NULL,
+	HeaderLogo nvarchar(100) NOT NULL,
+	FooterLogo nvarchar(100) NOT NULL,
+	Phone nvarchar(20) NOT NULL,
+	Language nvarchar(20) NOT NULL,
+  CONSTRAINT [PK_SETTINGS] PRIMARY KEY CLUSTERED
+  (
+  [İd] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+)
+GO
+ALTER TABLE [Books] WITH CHECK ADD CONSTRAINT [Books_fk0] FOREIGN KEY ([İnformation_İd]) REFERENCES [Information]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [Books] CHECK CONSTRAINT [Books_fk0]
+GO
+ALTER TABLE [Books] WITH CHECK ADD CONSTRAINT [Books_fk1] FOREIGN KEY ([Publish_İd]) REFERENCES [PublishHouse]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [Books] CHECK CONSTRAINT [Books_fk1]
+GO
+ALTER TABLE [Books] WITH CHECK ADD CONSTRAINT [Books_fk2] FOREIGN KEY ([Author_İd]) REFERENCES [Authors]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [Books] CHECK CONSTRAINT [Books_fk2]
+GO
+
+
+
+
+ALTER TABLE [SocialMedias] WITH CHECK ADD CONSTRAINT [SocialMedias_fk0] FOREIGN KEY ([Setting_İd]) REFERENCES [Settings]([İd])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [SocialMedias] CHECK CONSTRAINT [SocialMedias_fk0]
+GO
+
+ALTER TABLE [BooksCategory] WITH CHECK ADD CONSTRAINT [BooksCategory_fk0] FOREIGN KEY ([Genre_İd]) REFERENCES [Genres]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [BooksCategory] CHECK CONSTRAINT [BooksCategory_fk0]
+GO
+ALTER TABLE [BooksCategory] WITH CHECK ADD CONSTRAINT [BooksCategory_fk1] FOREIGN KEY ([Book_İd]) REFERENCES [Books]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [BooksCategory] CHECK CONSTRAINT [BooksCategory_fk1]
+GO
+
+
+ALTER TABLE [Comments] WITH CHECK ADD CONSTRAINT [Comments_fk0] FOREIGN KEY ([User_Id]) REFERENCES [User]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [Comments] CHECK CONSTRAINT [Comments_fk0]
+GO
+ALTER TABLE [Comments] WITH CHECK ADD CONSTRAINT [Comments_fk1] FOREIGN KEY ([Books_Id]) REFERENCES [Books]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [Comments] CHECK CONSTRAINT [Comments_fk1]
+GO
+
+
+ALTER TABLE [Discount] WITH CHECK ADD CONSTRAINT [Discount_fk0] FOREIGN KEY ([Book_İd]) REFERENCES [Books]([Id])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [Discount] CHECK CONSTRAINT [Discount_fk0]
+GO
+
+
